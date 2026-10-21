@@ -21,17 +21,18 @@ let categorias = [
 
 
 router.get("/", (req, res) => {
-    res.render("categorias/index", {
-        categorias: categorias 
-    });
+  res.render("categorias/index", {
+    categorias: categorias
+  });
 });
 
-router.get("/cadastro", (req, res) =>{
+router.get("/cadastro", (req, res) => {
   res.render("categorias/form-cadastro",)
 });
 
+//Salvar
 router.post("/", (req, res) => {
-  const {nome, descricao} = req.body;
+  const { nome, descricao } = req.body;
   const novaCategoria = {
     id: categorias.length + 1,
     nome: nome,
@@ -39,6 +40,30 @@ router.post("/", (req, res) => {
   };
   categorias.push(novaCategoria);
   res.redirect("/categorias");
+});
+
+//Excluir
+router.get("/excluir/:id", (req, res) =>{
+  let id = parseInt(req.params.id);
+  categorias = categorias.filter(c => c.id !== id);
+  res.redirect("/categorias");
+});
+
+//Editar - form - GET
+router.get("/editar/:id", (req, res) =>{
+  let id = parseInt(req.params.id);
+  let categoria = categorias.find(c => c.id === id)
+
+  if(!categoria){
+    return res.redirect("/categorias");
+  }
+
+  res.render("categorias/editar", {categoria});
+});
+
+//Editar - efetiva - POST
+router.post("/", (req, res) =>{
+
 });
 
 module.exports = router;
